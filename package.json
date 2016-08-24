@@ -1,0 +1,21 @@
+{
+    "name": "repostatus2md",
+    "version": "1.0.0",
+    "description": "Create a markdown overview of your repos statuses.",
+    "main": "bin/index.js",
+    "bin": {
+        "rs2md": "bin/rs2md.js"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Hendrik Wallbaum <mail@hendrikwallbaum.de>",
+    "dependencies": {
+        "commander": "^2.9.0",
+        "github": "^2.5.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/HoverBaum/repostatus-to-markdown.git"
+    }
+}
