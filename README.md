@@ -18,6 +18,8 @@ By default the resulting markdown will be printed to the commandline. This allow
 $ rs2dm -t [your token here] > repos.md
 ```
 
+rs2dm assumes that you have the status badges in a readme file which live in the top level of your repository. Otherwise a project will be classified as not having a status. In this we do not follow the standard, ignoring `repostatus.org` files.
+
 ```bash
 Usage: rs2md [options]
 
