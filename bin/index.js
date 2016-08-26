@@ -1,5 +1,6 @@
 const GitHubApi = require("github")
 const github = new GitHubApi()
+let allRepos = []
 
 const defaultOptions = {
 	includeForks: false,
@@ -24,22 +25,34 @@ module.exports = function parseRepos(options = defaultOptions, callback) {
 
 	github.repos.getAll({
 	    affiliation: 'owner'
-	}, function(err, res) {
+	}, gotRepos)
 
-		//Create an array of promises getting the repos readmes.
-	    const promises = res.filter(repo => forkFilter(repo, !options.includeForks))
-	        .map(addReame)
+	function gotRepos(err, res) {
+			allRepos.push(...res)
 
-		//When all readmes are here handle the repos.
-	    Promise.all(promises).then(repos => {
-	        const parsedRepos = repos.map(addStatus)
-	        const markdown = createMarkdown(parsedRepos, options.headline)
-			callback(markdown);
-	    }).catch(e => {
-	        console.log(e);
-	    })
-	})
+			//If there are more repos to get, get them first.
+			if(github.hasNextPage(res)) {
+				github.getNextPage(res, gotRepos)
+				return
+			}
+
+			//Create an array of promises getting the repos readmes.
+			const promises = allRepos.filter(repo => forkFilter(repo, !options.includeForks))
+				.map(addReame)
+
+			//When all readmes are here handle the repos.
+			Promise.all(promises).then(repos => {
+				const parsedRepos = repos.map(addStatus)
+				const markdown = createMarkdown(parsedRepos, options.headline)
+				callback(markdown);
+			}).catch(e => {
+				console.log(e);
+			})
+	}
+
 }
+
+
 
 /**
  *   Filter forks out.
