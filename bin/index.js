@@ -137,7 +137,7 @@ function createMarkdown(repos, headline) {
         md += `\n${headline} ${titleCase(status)}\n\n`
         repos.filter(repo => repo.status === status)
 			.map(repo => {
-				md += `[**${repo.name}**](${repo.url}) ${repo.description}\n\n`
+				md += `[**${repo.name}**](${repo.html_url}) ${repo.description}\n\n`
 			})
     })
 	return md
